@@ -1,0 +1,29 @@
+<html>
+<head>
+	<title>[DEMO] Tanks A Lot!</title>
+	<link rel="stylesheet" type="text/css" href="css/base.css">
+	<link rel="stylesheet" type="text/css" href="css/leaderboard.css">
+</head>
+
+<body>
+	<script src="scripts/socket.io.js"></script>
+	<script src="scripts/jquery-1.10.2.min.js"></script>
+	<script src="scripts/kinetic-v4.7.0.min.js"></script>
+    <script src="scripts/canvas-helpers.js"></script>
+    <script src="scripts/audio-helpers.js"></script>
+	<script src="game/Tank.js"></script>
+	<script src="game/Direction.js"></script>
+    <script src="game/ActionType.js"></script>
+    <script src="game/ActionRequestResponse.js"></script>
+	<script src="client/MapView.js"></script>
+	<script src="client/LeaderboardView.js"></script>
+	<script src="client/ViewerClient.js"></script>
+    <script src="client/Theme.js"></script>
+
+	<script defer>
+		client = new ViewerClient('http://localhost');
+		client.createDisplay();
+		client.initialise(function(){});
+	</script>
+</body>
+</html>

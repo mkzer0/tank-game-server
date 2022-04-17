@@ -1,0 +1,112 @@
+.container.main{
+    width: 100% !important;
+}
+
+.fill-height {
+	height: 100%;
+}
+
+.fill-width {
+	width: 100%;
+}
+
+.navbar {
+	min-height: 85px;
+}
+
+.navbar-static-top{
+	margin-bottom: 15px;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+.vertical-align-middle-tile {
+    height: 130px;
+}
+
+#loading-dialog .modal-dialog {
+    width: 350px;
+}
+
+.download-text {
+    margin: 0px;
+    margin-top: 45px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.custom-well {
+    margin: 0px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 0px;
+}
+
+.sig-well {
+    border-bottom-width: 0px;
+}
+
+.example-well {
+    border-top-width: 0px;
+}
+
+.example-well:before {
+    content: "Example";
+    color: #808080;
+    font-style: italic;
+}
+
+.game-settings-help{
+    font-size: 10pt;
+}
+
+.game-settings-label {
+	font-size: 10pt;
+	padding-top: 0 !important;
+}
+
+#mapView-container{
+	height: 100%;
+	width: 100%;
+}
+
+#leaderboardView-container{
+	height: 100%;
+	width: 100%;
+}
+
+.healthbar-blue{
+	background-color: blue;
+}
+.healthbar-green{
+	background-color: green;
+}
+.healthbar-red{
+	background-color: red;
+}
+.healthbar-yellow{
+	background-color: yellow;
+}
+
+.leaderboard-tankimage{
+	float: left;
+	padding-right: 10px;
+}
+
+.leaderboard-health{
+	margin-bottom: 0;
+}
+
+.leaderboard-details{
+	margin-bottom: 0;
+}
+
+.leaderboard-dead{
+    font-size: 10px;
+	height: 20px;
+	line-height: 1;
+	text-align: center;
+}

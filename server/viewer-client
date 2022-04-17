@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>mkzer0 - TankGame</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <link rel="stylesheet" type="text/css" href="css/metro-bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="css/base.css">
+  <link rel="stylesheet" type="text/css" href="css/leaderboard.css">
+
+  <!-- For IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+<script src=scripts/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<!-- Static navbar -->
+<div class="navbar navbar-default navbar-static-top">
+  <div class="navbar-header">
+    <div class"row">
+      <a class="navbar-brand">
+        <h1 id="page-title" style="margin-bottom: 20px;">mkzer0 - Tank Game</h1>
+      </a>
+    </div>
+  </div>
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <div class="nav navbar-nav navbar-left">
+    </div>
+    <div class="nav navbar-nav navbar-right">
+      <img class="bannerad-img" src="resources/mkzer0.png" title="ThemeForest" alt="mkzer0_Logo"
+      style="height: 90px; margin: 8px; padding: 10px">
+    </div>
+  </div>
+</div>
+
+<div class="container" id="container">
+
+  <!-- Jumbotron -->
+  <div id="main-menu" class="jumbotron">
+    <h1 style="margin-top: 0;">Tank Game</h1>
+    <p class="lead">A Fun Collaboration Exercise for Agile Software Development training</a></p>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-primary">
+          <div class="panel-heading"><h2 style="margin-top: 10px;">Game Settings</h2></div>
+
+          <div class="panel-body">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <label for="ip-edit" class="col-md-4 control-label game-settings-label">Server IP</label>
+                <div class="col-md-8">
+                  <input id="ip-edit" type="text" class="form-control" value="http://localhost" onKeyPress="onKeyPress(event)" autofocus>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="map-edit" class="col-md-4 control-label game-settings-label">Map Name</label>
+                <div class="col-md-8">
+                  <select id="map-edit" multiple class="form-control">
+                    <option value="0" selected="selected">Map #1</option>
+                    <option value="1">Map #2</option>
+                    <option value="2">Map #3</option>
+                    <option value="3">Map #4</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="ammo-edit" class="col-md-4 control-label game-settings-label">Ammo #</label>
+                <div class="col-md-8">
+                  <input id="ammo-edit" type="text" class="form-control" value="-1">
+                  <span class="help-block game-settings-help ">Enter "-1" for infinite ammo.</span>
+                </div>
+              </div>
+            </div>
+            <div id="warning-holder"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-primary">
+          <div class="panel-heading"><h2 style="margin-top: 10px;">Map Preview</h2></div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-10 col-centered">
+                <div id="map-preview" class="map-preview">
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-centered text-center">
+        <a id="start-button" class="btn btn-primary btn-lg" role="button">Start Game</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="loading-dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1>Initiating Server...</h1>
+      </div>
+      <div class="modal-body">
+        <div class="progress progress-striped active">
+        <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="scripts/jquery-1.10.2.min.js"></script>
+<!--<script type="text/javascript" src="scripts/jquery-1.8.0.js"></script>-->
+<script type="text/javascript" src="scripts/bootstrap.js"></script>
+<script type="text/javascript" src="scripts/kinetic-v4.7.0.min.js"></script>
+<script type="text/javascript" src="scripts/socket.io.js"></script>
+<script type="text/javascript" src="scripts/canvas-helpers.js"></script>
+<script type="text/javascript" src="scripts/audio-helpers.js"></script>
+<script type="text/javascript" src="game/Tank.js"></script>
+<script type="text/javascript" src="game/Direction.js"></script>
+<script type="text/javascript" src="game/ActionType.js"></script>
+<script type="text/javascript" src="game/AttackResult.js"></script>
+<script type="text/javascript" src="game/MoveResult.js"></script>
+<script type="text/javascript" src="game/ActionRequestResponse.js"></script>
+<script type="text/javascript" src="client/MapView.js"></script>
+<script type="text/javascript" src="client/LeaderboardView.js"></script>
+<script type="text/javascript" src="client/ViewerClient.js"></script>
+<script type="text/javascript" src="client/Theme.js"></script>  
+
+<script type="text/javascript">
+  this.hasErrors_ = false;
+
+  addMapPreview(1);
+
+  /* PAGE SPECIFIC JS */
+  function isValid(value, string) {
+    if (string && value && value != '' && value.indexOf('http://') != 1) return true;
+    return (value && !isNaN(value) && value != '');
+  }
+
+  function fieldsAreValid() {
+    return (isValid($('#ip-edit').val(), true) && isValid($('#ammo-edit').val()));
+  }
+
+  // display an error message
+  function displayError(error) {
+    this.hasErrors_ = true;
+    var $warning = $('<div class="alert alert-danger">'+error+'</div>');
+
+    removeErrors();
+    $('#warning-holder').append($warning);
+  }
+
+  // is the screen showing error messages
+  function hasErrors() {
+    return this.hasErrors_;
+  }
+
+  // remove error messages on screen
+  function removeErrors() {
+    this.hasErrors_ = false;
+    $('#warning-holder').empty();
+  }
+
+  // hookup ammo on change
+  $('#ammo-edit').change(function() {
+    if (fieldsAreValid()) {
+      removeErrors();
+    } else {
+      displayError('<strong>ERROR: </strong> Invalid values enterred');
+    }
+  })
+
+  // hookup map on change
+  $('#map-edit').change(function() {
+    console.log('change');
+    addMapPreview(parseInt($('#map-edit option:selected').val())+1)
+  })
+
+  function addMapPreview(id) {
+    var $image = $('<img src="game/MapData/'+id+'.PNG" width="100%;">')
+    $('#map-preview').empty();
+    $('#map-preview').append($image);
+  }
+
+  // get data from fields for passing
+  function getData() {
+    return {
+      ammo_: parseInt($('#ammo-edit').val(),10),
+      map_: parseInt($('#map-edit option:selected').val())
+    }
+  }
+	
+	function onKeyPress(e) {
+		// detect enter click
+		var code = (e.keyCode ? e.keyCode : e.which);
+		if(code == 13) { //Enter keycode
+			// deal code here
+			$('#start-button').click();
+		}
+	}
+
+  $('#start-button').click(function(){
+    // check values
+    if(!fieldsAreValid()) {
+      displayError('<strong>ERROR: </strong> Invalid values enterred');
+    } else {
+      // get data from fields before clearing
+      var data = getData();
+
+      // empty display container and create viewer client display
+      $('#container').empty();
+
+      // initiate viewer client
+      var client = new ViewerClient($('#ip-edit').val());
+
+      client.createDisplay('default');
+      $('#page-title').html('mkzer0 - Tank Game: <span style="color: red;">Initializing Server...</span>');
+      // show loading modal
+      $('#loading-dialog').modal('show');
+      // initialise the server with callback to update status of game
+      client.initialise(function(){
+        // remove loading modal
+        $('#loading-dialog').modal('hide');
+        $('#page-title').html('mkzer0 - Tank Game: <span style="color: green;">Live!</span>');
+        console.log('server initialised')
+      });
+
+      client.handleStartStopClick(data);
+    }
+  });
+
+</script>
+
+</body>
+</html>

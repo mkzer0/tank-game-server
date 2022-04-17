@@ -1,0 +1,37 @@
+#leaderboard-heading .header{
+	margin: 20 20 20 20;
+}
+#leaderboard-boards {
+	padding-left: 50px;
+	padding-right: 50px;
+}
+#leaderboard-boards table tr:nth-child(even){
+	/*background: black; /* for non-css3 browsers */
+	/*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='black', endColorstr='grey'); /* for IE */
+	/*background: -webkit-gradient(linear, left top, left bottom, from(black), to(grey)); /* for webkit browsers */
+	/*background: -moz-linear-gradient(top,  black,  grey); /* for firefox 3.6+ */
+}
+#leaderboard-boards table tr:nth-child(odd){
+	/*background: grey; /* for non-css3 browsers */
+	/*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='grey', endColorstr='black'); /* for IE */
+	/*background: -webkit-gradient(linear, left top, left bottom, from(grey), to(black)); /* for webkit browsers */
+	/*background: -moz-linear-gradient(top,  grey,  black); /* for firefox 3.6+ */
+}
+
+#leaderboard-boards .board {
+	padding-bottom: 30px;
+	font-size: 14pt;
+}
+#leaderboard-boards .board .rank {
+	float: left;
+	margin: 0 20 0 20;
+}
+#leaderboard-boards .board .name {
+	float: left;
+	margin: 0 20 0 20;
+	text-transform: uppercase;
+}
+#leaderboard-boards .board .score {
+	float: right;
+	margin: 0 20 0 20;
+}
