@@ -1,0 +1,267 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "See github.com/tank-game for documentation",
+    "version": "1.0.0",
+    "title": "A Tank Game for teaching agile software development",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "mick@recursiveloop.com.au"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:9999",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "tank-game",
+      "description": "A fun way to learn how to be an agile software developer!",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://github.com/mkzer0/tank-game"
+      }
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/tank": {
+      "post": {
+        "tags": [
+          "tank-game"
+        ],
+        "summary": "Place your tank on the game map",
+        "description": "This is the long description...",
+        "operationId": "tankAdd",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The tank to be added to the game map",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TankCreateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tank Created",
+            "schema":{
+              "$ref": "#/definitions/TankActionResponse"
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/tank/{tankId}/action": {
+      "post": {
+        "tags": [
+          "tank-game"
+        ],
+        "summary": "Submit an action to the tank game",
+        "description": "",
+        "operationId": "tankAction",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "tankRequest",
+            "in": "body",
+            "description": "Pet object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TankActionRequest"
+            }
+          },
+          {
+            "name": "tankId",
+            "in": "path",
+            "description": "Id of your team's tank",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Action Performed",
+            "schema":{
+              "$ref": "#/definitions/TankActionResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Pet not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "TankCreateRequest": {
+      "type": "object",
+      "required": [
+        "type_",
+        "data_"
+      ],
+      "properties": {
+        "type_": {
+          "type": "string",
+          "description": "Type of action",
+          "enum": [
+            "CREATE"
+          ],
+          "example": "CREATE"
+        },
+        "data_": {
+          "type": "object",
+          "description": "Action Request Information",
+          "properties": {
+            "colour_": {
+              "description": "tank colour",
+              "type": "string",
+              "enum": [
+                "blue",
+                "red",
+                "yellow",
+                "green"
+              ],
+              "example": "red"
+            }
+          }
+        }
+      }
+    },
+    "TankActionRequest": {
+      "type": "object",
+      "required": [
+        "type_",
+        "data_"
+      ],
+      "properties": {
+        "type_": {
+          "type": "string",
+          "description": "Type of action",
+          "enum": [
+            "MOVE",
+            "SCAN",
+            "ATTACK",
+            "STATUS_CHECK",
+            "RESPAWN"
+          ]
+        },
+        "data_": {
+          "type": "object",
+          "description": "Action Request Information",
+          "properties": {
+            "direction": {
+              "description": "direction to move the tank",
+              "type": "string",
+              "enum": [
+                "NORTH",
+                "SOUTH",
+                "EAST",
+                "WEST"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "TankActionResponse": {
+      "type": "object",
+      "properties": {
+        "tankId_": {
+          "type": "string",
+          "description": "Your tank's name",
+          "example": "Smart Tank"
+        },
+        "type_": {
+          "type": "string",
+          "enum": [
+            "CREATE",
+            "MOVE",
+            "SCAN",
+            "ATTACK",
+            "STATUS_CHECK",
+            "RESPAWN"
+          ]
+        },
+        "data_": {
+          "type": "object",
+          "properties": {
+            "id_": {
+              "type": "string"
+            },
+            "name_": {
+              "type": "string"
+            },
+            "ammo_": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "health_": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "score_": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "colour_": {
+              "type": "string"
+            },
+            "justDied_": {
+              "type": "boolean"
+            },
+            "queuedAction_": {
+              "type": "string"
+            },
+            "position_": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "y": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
