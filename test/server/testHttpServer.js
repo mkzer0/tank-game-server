@@ -81,7 +81,7 @@ describe('HttpServer', function() {
 	describe('initialise()', function() {
 		it('should getTankInitialProperties the express app to start listening for requests',
       function(done) {
-        HttpRequest.get('http://'+server.SERVER_IP+':'+server.SERVER_PORT+'/',
+        HttpRequest.get('http://'+server.SERVER_IP+':'+server.SERVER_PORT+'/viewer-client',
           function (err, res, body) {
             res.statusCode.should.eql(200);
             done();
@@ -198,20 +198,7 @@ describe('HttpServer', function() {
       , 'reopen delay' : 0
       , 'force new connection' : true
     });
-  };
-
-	describe('GET /', function() {
-		it('should return the api docs and download page', function(done) {
-      var locals = require('../../server/docs.js');
-      var pageHtml = jade.renderFile('./jade-templates/docs.pug', locals);
-			HttpRequest.get('http://' + server.SERVER_IP + ':' + server.SERVER_PORT + '/', function (err, res, body) {
-				if (err) throw err;
-				res.statusCode.should.eql(200);
-        hash(body).should.deep.eql(hash(pageHtml));
-				done();
-			});
-		});
-	});
+  }
 
   function hash(file) {
     return Crypto.createHash('sha1').update(file).digest('hex');
