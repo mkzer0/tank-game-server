@@ -12,6 +12,10 @@ var GameWorld = require('../game/GameWorld.js');
 var ErrorType = require('../game/ErrorType.js');
 var ControlCommand = require('../game/ControlCommand.js');
 
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 var HttpServer = function(ip, port, mapDataRelSrc, ipMapCheck) {
   this.SERVER_IP = ip || this.SERVER_IP;
   this.SERVER_PORT = port || this.SERVER_PORT;
@@ -19,7 +23,9 @@ var HttpServer = function(ip, port, mapDataRelSrc, ipMapCheck) {
   this.ipMapCheck = ipMapCheck;
 
   this.expressApp = express();
+
   this.expressApp.use(express.json());
+  this.expressApp.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   this.httpServer = http.createServer(this.expressApp,{"log level": 0});
   this.webSocketListener = socketIO(this.httpServer);
@@ -42,22 +48,9 @@ HttpServer.prototype.initialise = function() {
 };
 
 HttpServer.prototype.serveClient = function() {
-  this.expressApp.get('/', function(req, res) {
-    var apiData = require('./docs.js');
-    var html = jade.renderFile('./jade-templates/docs.pug', apiData);
-    res.send(200, html);
-  }.bind(this));
 
   this.expressApp.get('/viewer-client', function(req, res) {
       res.sendfile(this.CONTEXT_ROOT+'/html/index.html');
-  }.bind(this));
-
-  this.expressApp.get('/api/java/target/tank-game-api-1.0-SNAPSHOT.jar', function(req, res) {
-    res.sendfile(this.CONTEXT_ROOT+'/api/java/target/tank-game-api-1.0-SNAPSHOT.jar');
-  }.bind(this));
-  
-  this.expressApp.get('/api/mkzer0.TankGame.zip', function(req, res) {
-    res.sendfile(this.CONTEXT_ROOT+'/api/mkzer0.TankGame.zip');
   }.bind(this));
 
   this.expressApp.get('/scripts/*', function(req, res) {
@@ -88,9 +81,9 @@ HttpServer.prototype.serveClient = function() {
     try {
         var result;
         var controlRequest = req.body;
-        if (controlRequest.command == ControlCommand.START_GAME) {
+        if (controlRequest.command === ControlCommand.START_GAME) {
           result = this.gameWorld.startGame(controlRequest.options);
-        } else if (controlRequest.command == ControlCommand.END_GAME) {
+        } else if (controlRequest.command === ControlCommand.END_GAME) {
           result = this.gameWorld.endGame();
         }
         if (result instanceof Error) {
@@ -107,7 +100,6 @@ HttpServer.prototype.serveClient = function() {
       }
     }
   }.bind(this));
-
 	this.expressApp.post('/tank', function(req, res) {
     try {
       req.body.data_.ip = req.ip;
