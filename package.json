@@ -12,7 +12,7 @@
     "express": "~4.17.3",
     "node-uuid": "~1.4.1",
     "pug": "^3.0.2",
-    "request": "~2.27.0",
+    "request": "~2.88.2",
     "socket.io": "~4.4.1",
     "socket.io-client": "~4.4.1",
     "underscore": "^1.13.2"
