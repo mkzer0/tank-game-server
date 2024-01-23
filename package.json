@@ -6,12 +6,15 @@
   "scripts": {
     "start": "node server/main.js",
     "start-local": "node server/main.js 127.0.0.1 9999",
+    "lint:es": "eslint . --ext .js",
+    "lint:pug": "pug-lint ./jade-templates",
     "test": "nyc --check-coverage --reporter=html --reporter=text-summary mocha -R spec --recursive ./test/**/*.js --exit",
     "build": "pug --client --no-debug ./jade-templates --out ./html && npm run test",
-    "bundle": "zip -r tank-game.zip package.json client css fonts game html jade-templates resources server"
+    "bundle": "zip -r tank-game.zip package.json client css fonts game html jade-templates resources server",
+    "deploy": "aws s3 cp tank-game.zip s3://tank-game-bucket/tank-game.zip && aws cloudformation deploy --template-file template.yaml --stack-name tank-game-stack"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "express": "~4.17.3",
@@ -19,16 +22,19 @@
     "pug": "^3.0.2",
     "request": "~2.88.2",
     "socket.io": "~4.6.1",
-    "socket.io-client": "~4.4.1",
+    "socket.io-client": "^4.7.4",
     "underscore": "^1.13.2"
   },
   "devDependencies": {
     "chai": "~4.3.6",
+    "eslint": "^8.56.0",
+    "eslint-plugin-mocha": "^10.2.0",
     "expect": "27.5.1",
     "mocha": "^9.2.2",
     "nyc": "^15.1.0",
     "pug-cli": "^1.0.0-alpha6",
-    "pug-lint": "^2.6.0",
+    "pug-lint": "^2.7.0",
+    "pug-lint-config-clock": "^2.0.0",
     "rewire": "~6.0.0",
     "sinon": "~13.0.2",
     "sinon-chai": "~3.7.0"
