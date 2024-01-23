@@ -11,7 +11,7 @@
     "test": "nyc --check-coverage --reporter=html --reporter=text-summary mocha -R spec --recursive ./test/**/*.js --exit",
     "build": "pug --client --no-debug ./jade-templates --out ./html && npm run test",
     "bundle": "zip -r tank-game.zip package.json client css fonts game html jade-templates resources server",
-    "deploy": "aws s3 cp tank-game.zip s3://tank-game-bucket/tank-game.zip && aws cloudformation deploy --template-file template.yaml --stack-name tank-game-stack"
+    "deploy": "aws s3 cp tank-game.zip s3://tank-game-bucket/tank-game.zip && aws cloudformation deploy --template-file template.yml --stack-name tank-game-stack"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -30,7 +30,7 @@
     "eslint": "^8.56.0",
     "eslint-plugin-mocha": "^10.2.0",
     "expect": "27.5.1",
-    "mocha": "^9.2.2",
+    "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "pug-cli": "^1.0.0-alpha6",
     "pug-lint": "^2.7.0",
