@@ -1,16 +1,42 @@
-name: Deploy to Amazon ECS
+name: Deploy to AWS Elastic Beanstalk
 
 on:
   push:
     branches:
-      - main
+      - main  # Set the branch for deployment
 
 jobs:
   deploy:
-    name: Deploy
     runs-on: ubuntu-latest
-    environment: production
-    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Set this to your Node.js version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create zip file
+        run: npm run bundle
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload to S3
+        run: aws s3 cp tank-game.zip s3://tank-game-bucket/tank-game.zip
+
+      - name: Deploy CloudFormation stack
+        run: |
+          aws cloudformation deploy \
+            --template-file template.yml \
+            --stack-name tank-game-stack \
+            --parameter-overrides EnvironmentName=Production S3Bucket=tank-game-bucket S3Key=tank-game.zip \
+            --capabilities CAPABILITY_IAM

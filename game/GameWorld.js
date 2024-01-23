@@ -14,13 +14,9 @@ var Tank = require('./Tank.js');
 var TankColourMapping = require('./TankColourMapping.js');
 var ControlResult = require('./ControlResult.js');
 
-var ipcheck = false;
-
-var GameWorld = function(httpServer, mapDataLocation, ipchk) {
+var GameWorld = function(httpServer, mapDataLocation) {
   GameWorld.prototype.server = httpServer;
   GameWorld.prototype.mapDataLocation = mapDataLocation;
-
-  ipcheck = ipchk;
 
   var map = null;
   var tankColourMapping = new TankColourMapping(21, 21);

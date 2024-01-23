@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation template for deploying the 'tank-game' app to Elastic Beanstalk.
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Description: A name for the Elastic Beanstalk environment.
+
+  S3Bucket:
+    Type: String
+    Description: The S3 bucket containing the zipped application code.
+
+  S3Key:
+    Type: String
+    Description: The S3 key of the zipped application code.
+
+Resources:
+  TankGameApplication:
+    Type: AWS::ElasticBeanstalk::Application
+    Properties:
+      ApplicationName: "tank-game"
+      Description: "Elastic Beanstalk Application for the Tank Game Node.js app"
+
+  TankGameApplicationVersion:
+    Type: AWS::ElasticBeanstalk::ApplicationVersion
+    Properties:
+      ApplicationName: !Ref TankGameApplication
+      SourceBundle:
+        S3Bucket: !Ref S3Bucket
+        S3Key: !Ref S3Key
+
+  TankGameEnvironment:
+    Type: AWS::ElasticBeanstalk::Environment
+    Properties:
+      ApplicationName: !Ref TankGameApplication
+      EnvironmentName: !Ref EnvironmentName
+      SolutionStackName: "64bit Amazon Linux 2 v5.4.4 running Node.js 14"
+      VersionLabel: !Ref TankGameApplicationVersion
+      OptionSettings:
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: InstanceType
+          Value: t2.micro
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: EnvironmentType
+          Value: SingleInstance
+
+Outputs:
+  ApplicationURL:
+    Description: URL of the Elastic Beanstalk Environment
+    Value: !GetAtt [TankGameEnvironment, EndpointURL]

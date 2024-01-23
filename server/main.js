@@ -1,15 +1,9 @@
 var HttpServer = require("./HttpServer");
 
-var ip = process.argv[2] || process.env.IP;
+// Default to '0.0.0.0' if no IP is provided
+var ip = process.argv[2] || '0.0.0.0';
 var port = process.argv[3] || process.env.PORT;
 var mapDataFile = process.argv[4];
 
-var ipMapCheck = process.argv[5];
-if (ipMapCheck == undefined || ipMapCheck === 'true') {
-  ipMapCheck = true;
-} else if (ipMapCheck === 'false') {
-  ipMapCheck = false;
-}
-
-var httpServer = new HttpServer(ip, port, mapDataFile, ipMapCheck);
+var httpServer = new HttpServer(ip, port, 'MapData.js');
 httpServer.initialise();

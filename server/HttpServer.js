@@ -12,11 +12,10 @@ var GameWorld = require('../game/GameWorld.js');
 var ErrorType = require('../game/ErrorType.js');
 var ControlCommand = require('../game/ControlCommand.js');
 
-var HttpServer = function(ip, port, mapDataRelSrc, ipMapCheck) {
+var HttpServer = function(ip, port, mapDataRelSrc) {
   this.SERVER_IP = ip || this.SERVER_IP;
   this.SERVER_PORT = port || this.SERVER_PORT;
   this.MAP_DATA_LOCATION = mapDataRelSrc || this.MAP_DATA_LOCATION;
-  this.ipMapCheck = ipMapCheck;
 
   this.expressApp = express();
   this.expressApp.use(express.json());
@@ -24,14 +23,12 @@ var HttpServer = function(ip, port, mapDataRelSrc, ipMapCheck) {
   this.httpServer = http.createServer(this.expressApp,{"log level": 0});
   this.webSocketListener = socketIO(this.httpServer);
   this.webSocketListener.on('connection', this.retainLink.bind(this))
-  //this.webSocketListener = socketIO.listen(this.httpServer, {"log level": 0});
-  //this.webSocketListener.sockets.on('connection', this.retainLink.bind(this));
 
   this.initialiseGame();
 };
 
 HttpServer.prototype.initialiseGame = function() {
-	this.gameWorld = new GameWorld(this, this.MAP_DATA_LOCATION, this.ipMapCheck);
+	this.gameWorld = new GameWorld(this, this.MAP_DATA_LOCATION);
 };
 
 HttpServer.prototype.initialise = function() {
