@@ -34,7 +34,7 @@ Resources:
     Properties:
       ApplicationName: !Ref TankGameApplication
       EnvironmentName: !Ref EnvironmentName
-      SolutionStackName: "64bit Amazon Linux 2 v5.4.4 running Node.js 14"
+      SolutionStackName: "64bit Amazon Linux 2023 v6.0.4 running Node.js 18"
       VersionLabel: !Ref TankGameApplicationVersion
       OptionSettings:
         - Namespace: aws:autoscaling:launchconfiguration

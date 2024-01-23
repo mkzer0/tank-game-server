@@ -10,8 +10,7 @@
     "lint:pug": "pug-lint ./jade-templates",
     "test": "nyc --check-coverage --reporter=html --reporter=text-summary mocha -R spec --recursive ./test/**/*.js --exit",
     "build": "pug --client --no-debug ./jade-templates --out ./html && npm run test",
-    "bundle": "zip -r tank-game.zip package.json client css fonts game html jade-templates resources server",
-    "deploy": "aws s3 cp tank-game.zip s3://tank-game-bucket/tank-game.zip && aws cloudformation deploy --template-file template.yml --stack-name tank-game-stack"
+    "bundle": "zip -r tank-game.zip package.json client css fonts game html jade-templates resources server"
   },
   "engines": {
     "node": ">=18.0.0"
